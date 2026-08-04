@@ -7,7 +7,7 @@ body{background: #dedfc399;width:360px;margin: 2px auto;}
 ------------------------------*/
 /* biruTabs block */
 .TabsBoxU{
-  width: 330px;
+  width: 332px;
   box-shadow: 0px 0px 6px 0px #000;
 }
 
@@ -54,7 +54,7 @@ body{background: #dedfc399;width:360px;margin: 2px auto;}
 
 /* tabs buttom */
 .tabCaption{
-  padding:0em;
+  padding:0.1em;
   z-index:999999;
 }
 

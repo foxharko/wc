@@ -54,7 +54,7 @@ body{background: #dedfc399;width:360px;margin: 2px auto;}
 
 /* tabs buttom */
 .tabCaption{
-  padding:0.5em;
+  padding:0em;
   z-index:999999;
 }
 

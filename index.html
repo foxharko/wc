@@ -19,7 +19,7 @@
  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" as="style" />
   
   <!-- CSS -->
-  <link href="/wc/preloader/preloader.css" rel="stylesheet" type="text/css">
+ <!-- <link href="/wc/preloader/preloader.css" rel="stylesheet" type="text/css">  -->
   <link href="/wc/widget-carousel/content.css" rel="stylesheet" type="text/css">
   
   <!-- JS -->
@@ -34,16 +34,14 @@ box-shadow: 0px 0px 6px 0px #000;
 }
 
 .qew1{
-width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+display: flex;
+      align-items: center;
+      justify-content: center;
 border-radius: 4px;
 background-color: #ffffff;
 box-shadow: 0px 0px 6px 0px #000;
+width: 330px;
 margin: 5px 5px 0px 5px;
-justify-content: center;
 }
 </style>
 
@@ -57,20 +55,21 @@ justify-content: center;
   <div id="biruTabs2" class="biruTab">
     <ul>
       <!-- WC1 tiktok -->
-      <div class="tiktok-box">
-
-    <button id="foxHarkoTikTokLoadBtn" class="tiktok-btn" type="button" aria-controls="foxHarkoTikTokWidget">
-        Показати TikTok
+      <li>
+        <div class="tabCaption">
+         <!-- tiktok -->
+        <div class="tiktok-box">
+    <button id="loadTikTokBtn" class="tiktok-btn">
+        Показать TikTok
     </button>
 
-    <div id="foxHarkoTikTokLoader" class="tiktok-loader">
+    <div id="tiktokLoader" class="tiktok-loader" style="display: none;">
         <div class="spinner"></div>
-        <span>Завантаження TikTok...</span>
+        <span>Загрузка TikTok...</span>
     </div>
 
-    <div id="foxHarkoTikTokWidget" class="tiktok-widget"></div>
-
-    </div>
+    <div id="tiktokWidget" class="tiktok-widget"></div>
+   </div>
           <!-- !! -->
           </div>
       </li>

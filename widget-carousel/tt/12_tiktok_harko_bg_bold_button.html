@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    padding:20px;
+    background:#f5f5f5;
+}
+
+.tiktok-box{
+    width:330px;
+    height:410px;
+    margin:auto;
+    font-family:Arial,sans-serif;
+    position:relative;
+    overflow:hidden;
+    border-radius:18px;
+    background-image:url("fox_harko_tiktok_330x410.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
+}
+
+.tiktok-box::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to bottom, rgba(0,0,0,.12), rgba(0,0,0,.35));
+    pointer-events:none;
+}
+
+.tiktok-btn{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:80%;
+    max-width:250px;
+    padding:13px 16px;
+    font-size:17px;
+    font-weight:900;
+    letter-spacing:.3px;
+    border:2px solid rgba(255,255,255,.95);
+    border-radius:12px;
+    background:rgba(0,0,0,.42);
+    color:#fff;
+    cursor:pointer;
+    transition:background .2s, box-shadow .2s, transform .2s;
+    z-index:2;
+    text-shadow:0 2px 5px rgba(0,0,0,.95);
+    box-shadow:
+        -3px 0 0 rgba(37,244,238,.95),
+         3px 0 0 rgba(254,44,85,.95),
+         0 5px 16px rgba(0,0,0,.45);
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+}
+
+.tiktok-btn:hover{
+    background:rgba(0,0,0,.62);
+    box-shadow:
+        -4px 0 8px rgba(37,244,238,.95),
+         4px 0 8px rgba(254,44,85,.95),
+         0 7px 18px rgba(0,0,0,.5);
+}
+
+.tiktok-btn:active{
+    transform:translate(-50%,-50%) scale(.98);
+}
+
+.tiktok-loader{
+    display:none;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    padding:20px;
+    color:#fff;
+    position:absolute;
+    inset:0;
+    z-index:2;
+    background:rgba(0,0,0,.28);
+}
+
+.spinner{
+    width:24px;
+    height:24px;
+    border:3px solid rgba(255,255,255,.35);
+    border-top-color:#fff;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.tiktok-widget{
+    opacity:0;
+    transition:.4s;
+    position:relative;
+    z-index:2;
+}
+
+.tiktok-widget.show{
+    opacity:1;
+}
+</style>
+</head>
+<body>
+
+<div class="tiktok-box">
+
+    <button id="foxHarkoTikTokLoadBtn" class="tiktok-btn" type="button" aria-controls="foxHarkoTikTokWidget">
+        Показати TikTok
+    </button>
+
+    <div id="foxHarkoTikTokLoader" class="tiktok-loader">
+        <div class="spinner"></div>
+        <span>Завантаження TikTok...</span>
+    </div>
+
+    <div id="foxHarkoTikTokWidget" class="tiktok-widget"></div>
+
+</div>
+
+<script>
+(() => {
+    let tiktokLoaded = false;
+
+    const button = document.getElementById("foxHarkoTikTokLoadBtn");
+    const loader = document.getElementById("foxHarkoTikTokLoader");
+    const widget = document.getElementById("foxHarkoTikTokWidget");
+
+    if (!button || !loader || !widget) return;
+
+    button.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (tiktokLoaded) return;
+        tiktokLoaded = true;
+
+        button.style.display = "none";
+        loader.style.display = "flex";
+
+        widget.innerHTML = `
+            <blockquote
+                class="tiktok-embed"
+                cite="https://www.tiktok.com/@fox_harko"
+                data-unique-id="fox_harko"
+                data-embed-type="creator"
+                style="max-width:330px; min-width:288px;">
+                <section>
+                    <a target="_blank"
+                       rel="noopener noreferrer"
+                       href="https://www.tiktok.com/@fox_harko?refer=creator_embed">
+                        @fox_harko
+                    </a>
+                </section>
+            </blockquote>
+        `;
+
+        function showWidget() {
+            loader.style.display = "none";
+            widget.classList.add("show");
+        }
+
+        if (window.TikTokEmbed) {
+            window.TikTokEmbed.lib.render();
+            setTimeout(showWidget, 800);
+            return;
+        }
+
+        const script = document.createElement("script");
+        script.src = "https://www.tiktok.com/embed.js";
+        script.async = true;
+
+        script.onload = function () {
+            if (window.TikTokEmbed) {
+                window.TikTokEmbed.lib.render();
+            }
+            setTimeout(showWidget, 800);
+        };
+
+        document.body.appendChild(script);
+    });
+})();
+</script>
+
+</body>
+</html>

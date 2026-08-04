@@ -34,9 +34,6 @@ box-shadow: 0px 0px 6px 0px #000;
 }
 
 .qew1{
-display: flex;
-      align-items: center;
-      justify-content: center;
 border-radius: 4px;
 background-color: #ffffff;
 box-shadow: 0px 0px 6px 0px #000;
@@ -58,18 +55,23 @@ margin: 5px 5px 0px 5px;
       <li>
         <div class="tabCaption">
          <!-- tiktok -->
-        <div class="tiktok-box">
-    <button id="loadTikTokBtn" class="tiktok-btn">
-        Показать TikTok
-    </button>
-
-    <div id="tiktokLoader" class="tiktok-loader" style="display: none;">
-        <div class="spinner"></div>
-        <span>Загрузка TikTok...</span>
-    </div>
-
-    <div id="tiktokWidget" class="tiktok-widget"></div>
-   </div>
+        <iframe
+    src="https://fox-harko.pp.ua/wc/widget-carousel/tt/12_tiktok_harko_bg_bold_button.html"
+    width="330"
+    height="410"
+    title="TikTok @fox_harko"
+    loading="lazy"
+    scrolling="no"
+    frameborder="0"
+    style="
+        width:330px;
+        height:410px;
+        border:0;
+        overflow:hidden;
+        display:block;
+        margin:0 auto;
+    ">
+</iframe>
           <!-- !! -->
           </div>
       </li>

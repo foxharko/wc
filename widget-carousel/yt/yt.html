@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html,
+body{
+    margin:0;
+    padding:0;
+}
+
+.youtube-box{
+    width:330px;
+    height:630px;
+    margin:0 auto;
+    font-family:Arial,sans-serif;
+    position:relative;
+    overflow:hidden;
+    border-radius:18px;
+
+    background-image:url("fox_harko_youtube_330x630.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
+}
+
+.youtube-box::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,.05),
+        rgba(0,0,0,.32)
+    );
+
+    pointer-events:none;
+}
+
+
+/* КНОПКА */
+
+.youtube-btn{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+
+    width:80%;
+    max-width:250px;
+    padding:13px 16px;
+
+    font-size:17px;
+    font-weight:900;
+    letter-spacing:.3px;
+
+    border:2px solid rgba(255,255,255,.95);
+    border-radius:12px;
+
+    background:rgba(255,0,0,.80);
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:
+        background .2s,
+        box-shadow .2s,
+        transform .2s;
+
+    z-index:3;
+
+    text-shadow:0 2px 5px rgba(0,0,0,.7);
+
+    box-shadow:
+        0 0 0 2px rgba(255,0,0,.25),
+        0 6px 18px rgba(0,0,0,.40);
+
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+}
+
+.youtube-btn:hover{
+    background:rgba(255,0,0,.95);
+
+    box-shadow:
+        0 0 12px rgba(255,0,0,.7),
+        0 7px 18px rgba(0,0,0,.45);
+}
+
+.youtube-btn:active{
+    transform:translate(-50%,-50%) scale(.98);
+}
+
+
+/* ЗАВАНТАЖЕННЯ */
+
+.youtube-loader{
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    gap:10px;
+
+    position:absolute;
+    inset:0;
+
+    color:#fff;
+
+    background:rgba(0,0,0,.40);
+
+    z-index:4;
+}
+
+.youtube-spinner{
+    width:24px;
+    height:24px;
+
+    border:3px solid rgba(255,255,255,.35);
+    border-top-color:#fff;
+
+    border-radius:50%;
+
+    animation:youtube-spin .8s linear infinite;
+}
+
+@keyframes youtube-spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* КОНТЕНТ */
+
+.youtube-widget{
+    position:absolute;
+    inset:0;
+
+    width:330px;
+    height:630px;
+
+    box-sizing:border-box;
+
+    padding:10px 7px;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    background:#fff;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:opacity .4s;
+
+    z-index:5;
+}
+
+.youtube-widget.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.youtube-widget p{
+    margin:8px 0 7px;
+
+    text-align:center;
+
+    font-size:15px;
+    font-weight:700;
+
+    color:#222;
+}
+
+.youtube-widget hr{
+    border:0;
+    border-top:1px solid #ddd;
+
+    margin:12px 0;
+}
+
+.youtube-widget iframe{
+    display:block;
+
+    margin:0 auto;
+
+    border:0;
+}
+
+
+/* ПІДПИСКА */
+
+.youtube-subscribe{
+    width:100%;
+    text-align:center;
+
+    margin-bottom:8px;
+}
+
+
+/* SHORTS */
+
+.sh-wrap{
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="youtube-box">
+
+    <button
+        id="foxHarkoYoutubeLoadBtn"
+        class="youtube-btn"
+        type="button">
+
+        ▶ Показати YouTube
+
+    </button>
+
+
+    <div
+        id="foxHarkoYoutubeLoader"
+        class="youtube-loader">
+
+        <div class="youtube-spinner"></div>
+
+        <span>Завантаження YouTube...</span>
+
+    </div>
+
+
+    <div
+        id="foxHarkoYoutubeWidget"
+        class="youtube-widget">
+    </div>
+
+</div>
+
+
+<script>
+(() => {
+
+    let youtubeLoaded = false;
+
+    const button =
+        document.getElementById("foxHarkoYoutubeLoadBtn");
+
+    const loader =
+        document.getElementById("foxHarkoYoutubeLoader");
+
+    const widget =
+        document.getElementById("foxHarkoYoutubeWidget");
+
+
+    if (!button || !loader || !widget) return;
+
+
+    button.addEventListener("click", function(event){
+
+        event.preventDefault();
+        event.stopPropagation();
+
+
+        if (youtubeLoaded) return;
+
+        youtubeLoaded = true;
+
+
+        button.style.display = "none";
+
+        loader.style.display = "flex";
+
+
+        widget.innerHTML = `
+
+            <div class="youtube-subscribe">
+
+                <iframe
+                    width="160"
+                    height="50"
+
+                    src="https://www.youtube.com/subscribe_embed?usegapi=1&channelid=UCDrxhmXaRdUVOmazGRbjSBg&layout=full&count=default"
+
+                    title="Підписатися на YouTube канал"
+
+                    frameborder="0"
+
+                    scrolling="no">
+                </iframe>
+
+            </div>
+
+
+            <p>Все відео каналу</p>
+
+            <iframe
+                width="315"
+                height="177"
+
+                src="https://www.youtube.com/embed/videoseries?list=UUDrxhmXaRdUVOmazGRbjSBg"
+
+                title="Всі відео каналу"
+
+                frameborder="0"
+
+                allow="
+                    accelerometer;
+                    autoplay;
+                    clipboard-write;
+                    encrypted-media;
+                    gyroscope;
+                    picture-in-picture;
+                    web-share
+                "
+
+                allowfullscreen>
+            </iframe>
+
+
+            <hr>
+
+
+            <p>Популярні відео</p>
+
+            <iframe
+                width="315"
+                height="177"
+
+                src="https://www.youtube.com/embed/videoseries?list=UULPDrxhmXaRdUVOmazGRbjSBg"
+
+                title="Популярні відео"
+
+                frameborder="0"
+
+                allow="
+                    accelerometer;
+                    autoplay;
+                    clipboard-write;
+                    encrypted-media;
+                    gyroscope;
+                    picture-in-picture;
+                    web-share
+                "
+
+                allowfullscreen>
+            </iframe>
+
+
+            <hr>
+
+
+            <p>SHORTS</p>
+
+            <div class="sh-wrap">
+
+                <iframe
+                    width="275"
+                    height="557"
+
+                    src="https://www.youtube.com/embed/videoseries?list=UUSHDrxhmXaRdUVOmazGRbjSBg"
+
+                    title="YouTube Shorts"
+
+                    frameborder="0"
+
+                    allow="
+                        accelerometer;
+                        autoplay;
+                        clipboard-write;
+                        encrypted-media;
+                        gyroscope;
+                        picture-in-picture;
+                        web-share
+                    "
+
+                    allowfullscreen>
+                </iframe>
+
+            </div>
+
+        `;
+
+
+        const iframe =
+            widget.querySelector("iframe");
+
+
+        if (iframe){
+
+            iframe.addEventListener("load", function(){
+
+                loader.style.display = "none";
+
+                widget.classList.add("show");
+
+            });
+
+        }else{
+
+            loader.style.display = "none";
+
+            widget.classList.add("show");
+
+        }
+
+    });
+
+})();
+</script>
+
+</body>
+</html>

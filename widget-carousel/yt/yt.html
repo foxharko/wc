@@ -215,15 +215,32 @@ body{
 .youtube-subscribe{
     display:flex;
     justify-content:center;
+    align-items:center;
 
+    width:max-content;
     min-height:50px;
-    margin-bottom:8px;
+
+    box-sizing:border-box;
+
+    margin:0 auto 10px;
+    padding:4px 5px;
+
+    border:2px solid #fff;
+    border-radius:10px;
+
+    background:rgba(255,255,255,.96);
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.18),
+        0 4px 12px rgba(0,0,0,.35);
 
     overflow:hidden;
 }
 
 .youtube-subscribe iframe{
+    display:block;
     border:0;
+    background:#fff;
 }
 
 /* =========================

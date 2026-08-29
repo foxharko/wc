@@ -154,7 +154,7 @@ body{
     height:650px;
     box-sizing:border-box;
 
-    padding:10px 8px 84px;
+    padding:10px 8px 86px;
 
     overflow-x:hidden;
     overflow-y:auto;
@@ -659,7 +659,8 @@ body{
 }
 
 /* =========================
-   ЗАКРІПЛЕНА НИЖНЯ КНОПКА
+   ЗАКРІПЛЕНА НИЖНЯ ПАНЕЛЬ
+   3 ОКРЕМІ КНОПКИ В ОДИН РЯД
 ========================= */
 
 .youtube-fixed-bottom{
@@ -672,14 +673,14 @@ body{
 
     box-sizing:border-box;
 
-    padding:10px 14px 12px;
+    padding:10px 10px 12px;
 
     z-index:8;
 
     background:linear-gradient(
         to top,
-        rgba(10,10,10,1) 68%,
-        rgba(10,10,10,.92) 84%,
+        rgba(10,10,10,1) 72%,
+        rgba(10,10,10,.94) 86%,
         rgba(10,10,10,0)
     );
 
@@ -690,42 +691,56 @@ body{
     display:block;
 }
 
-.youtube-channel-link{
-    display:flex;
+.youtube-bottom-nav{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:6px;
 
     width:100%;
-    height:46px;
+}
 
-    box-sizing:border-box;
-
+.youtube-bottom-link{
+    display:flex;
     align-items:center;
     justify-content:center;
 
-    border-radius:11px;
+    min-width:0;
+    height:44px;
 
-    background:#ff0000;
+    box-sizing:border-box;
+
+    padding:5px 6px;
+
+    border:1px solid rgba(255,255,255,.38);
+    border-radius:9px;
+
+    background:rgba(255,0,0,.88);
     color:#fff;
 
     text-decoration:none;
+    text-align:center;
 
-    font-size:15px;
+    font-size:10.5px;
+    line-height:1.1;
     font-weight:900;
 
-    box-shadow:0 4px 14px rgba(0,0,0,.30);
+    box-shadow:0 4px 12px rgba(0,0,0,.28);
 
     transition:
-        background .2s,
-        transform .2s;
+        background .18s,
+        border-color .18s,
+        transform .18s;
 
     pointer-events:auto;
 }
 
-.youtube-channel-link:hover{
-    background:#d90000;
+.youtube-bottom-link:hover{
+    background:#ff0000;
+    border-color:#fff;
 }
 
-.youtube-channel-link:active{
-    transform:scale(.98);
+.youtube-bottom-link:active{
+    transform:scale(.97);
 }
 
 @media(max-width:330px){
@@ -798,24 +813,6 @@ body{
             </iframe>
 
         </div>
-
-
-        <a
-            class="youtube-community-link"
-            href="https://www.youtube.com/@fox_harko/community"
-            target="_blank"
-            rel="noopener noreferrer">
-            💬 СПІЛЬНОТА
-        </a>
-
-
-        <a
-            class="youtube-all-videos-link"
-            href="https://www.youtube.com/playlist?list=UUWoKuErHW4Dwex8w-8RgZSA"
-            target="_blank"
-            rel="noopener noreferrer">
-            📺 ВСЕ ВІДЕО КАНАЛУ
-        </a>
 
 
         <div
@@ -912,13 +909,33 @@ body{
         id="foxHarkoYoutubeFixedBottom"
         class="youtube-fixed-bottom">
 
-        <a
-            class="youtube-channel-link"
-            href="https://www.youtube.com/channel/UCWoKuErHW4Dwex8w-8RgZSA"
-            target="_blank"
-            rel="noopener noreferrer">
-            Відкрити канал Харка на YouTube
-        </a>
+        <div class="youtube-bottom-nav">
+
+            <a
+                class="youtube-bottom-link"
+                href="https://www.youtube.com/@fox_harko"
+                target="_blank"
+                rel="noopener noreferrer">
+                КАНАЛ
+            </a>
+
+            <a
+                class="youtube-bottom-link"
+                href="https://www.youtube.com/@fox_harko/community"
+                target="_blank"
+                rel="noopener noreferrer">
+                СПІЛЬНОТА
+            </a>
+
+            <a
+                class="youtube-bottom-link"
+                href="https://www.youtube.com/playlist?list=UUWoKuErHW4Dwex8w-8RgZSA"
+                target="_blank"
+                rel="noopener noreferrer">
+                ВСЕ ВІДЕО
+            </a>
+
+        </div>
 
     </div>
 

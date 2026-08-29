@@ -16,47 +16,57 @@ body{
 
 .youtube-box{
     width:330px;
-    height:630px;
+    height:650px;
     margin:0 auto;
     font-family:Arial,sans-serif;
     position:relative;
     overflow:hidden;
     border-radius:18px;
+    background:#111;
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
+}
 
-    background-image:url("fox_harko_youtube_330x630.png");
+/* =========================
+   ОБКЛАДИНКА-КНОПКА
+========================= */
+
+.youtube-cover-btn{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    padding:0;
+    margin:0;
+    border:0;
+    cursor:pointer;
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.10),
+            rgba(0,0,0,.20)
+        ),
+        url("fox_harko_youtube_cover_330x630.png");
+
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
 
-    box-shadow:0 10px 30px rgba(0,0,0,.22);
+    z-index:6;
 }
 
-.youtube-box::before{
-    content:"";
+.youtube-cover-label{
     position:absolute;
-    inset:0;
-    background:linear-gradient(
-        to bottom,
-        rgba(0,0,0,.05),
-        rgba(0,0,0,.35)
-    );
-    pointer-events:none;
-    z-index:1;
-}
-
-
-/* =========================
-   ГОЛОВНА КНОПКА
-========================= */
-
-.youtube-btn{
-    position:absolute;
-    top:50%;
     left:50%;
+    top:50%;
+
     transform:translate(-50%,-50%);
 
     width:80%;
     max-width:250px;
+    box-sizing:border-box;
+
     padding:13px 16px;
 
     font-size:17px;
@@ -66,17 +76,10 @@ body{
     border:2px solid rgba(255,255,255,.95);
     border-radius:12px;
 
-    background:rgba(255,0,0,.82);
+    background:rgba(255,0,0,.84);
     color:#fff;
 
-    cursor:pointer;
-
-    transition:
-        background .2s,
-        box-shadow .2s,
-        transform .2s;
-
-    z-index:3;
+    text-align:center;
 
     text-shadow:0 2px 5px rgba(0,0,0,.7);
 
@@ -86,22 +89,26 @@ body{
 
     backdrop-filter:blur(3px);
     -webkit-backdrop-filter:blur(3px);
+
+    transition:
+        background .2s,
+        box-shadow .2s,
+        transform .2s;
 }
 
-.youtube-btn:hover{
-    background:rgba(255,0,0,.96);
+.youtube-cover-btn:hover .youtube-cover-label{
+    background:rgba(255,0,0,.97);
     box-shadow:
-        0 0 12px rgba(255,0,0,.7),
+        0 0 12px rgba(255,0,0,.72),
         0 7px 18px rgba(0,0,0,.45);
 }
 
-.youtube-btn:active{
+.youtube-cover-btn:active .youtube-cover-label{
     transform:translate(-50%,-50%) scale(.98);
 }
 
-
 /* =========================
-   ЗАВАНТАЖЕННЯ
+   LOADER
 ========================= */
 
 .youtube-loader{
@@ -114,9 +121,9 @@ body{
     gap:10px;
 
     color:#fff;
-    background:rgba(0,0,0,.45);
+    background:rgba(0,0,0,.52);
 
-    z-index:4;
+    z-index:7;
 }
 
 .youtube-spinner{
@@ -132,14 +139,11 @@ body{
 }
 
 @keyframes youtube-spin{
-    to{
-        transform:rotate(360deg);
-    }
+    to{ transform:rotate(360deg); }
 }
 
-
 /* =========================
-   ВНУТРІШНІЙ YOUTUBE-БЛОК
+   КОНТЕНТ
 ========================= */
 
 .youtube-widget{
@@ -147,27 +151,48 @@ body{
     inset:0;
 
     width:330px;
-    height:630px;
-
+    height:650px;
     box-sizing:border-box;
 
-    /* Нижній відступ потрібен, щоб закріплена кнопка
-       не перекривала останній контент. */
-    padding:10px 7px 82px;
+    padding:10px 8px 84px;
 
     overflow-x:hidden;
     overflow-y:auto;
 
-    background:#fff;
-
     opacity:0;
     visibility:hidden;
 
-    transition:opacity .4s;
+    transition:opacity .35s;
 
     z-index:5;
 
     scrollbar-width:thin;
+}
+
+.youtube-widget::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(8,8,8,.79),
+            rgba(8,8,8,.74)
+        ),
+        url("fox_harko_youtube_bg_330x630.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    z-index:0;
+    pointer-events:none;
+}
+
+.youtube-widget > *{
+    position:relative;
+    z-index:1;
 }
 
 .youtube-widget.show{
@@ -175,51 +200,463 @@ body{
     visibility:visible;
 }
 
-.youtube-widget iframe{
-    display:block;
-    margin:0 auto;
-    border:0;
-}
-
-.youtube-widget p{
-    margin:10px 0 7px;
+.youtube-title{
+    margin:2px 0 8px;
     text-align:center;
-    color:#202124;
-    font-size:15px;
+
+    color:#fff;
+
+    font-size:19px;
     font-weight:900;
+
+    text-shadow:0 2px 4px rgba(0,0,0,.7);
 }
 
-.youtube-widget hr{
+.youtube-subscribe{
+    display:flex;
+    justify-content:center;
+
+    min-height:50px;
+    margin-bottom:8px;
+
+    overflow:hidden;
+}
+
+.youtube-subscribe iframe{
     border:0;
-    border-top:1px solid #ddd;
-    margin:14px 0;
+}
+
+/* =========================
+   КНОПКА "СПІЛЬНОТА"
+========================= */
+
+.youtube-community-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:calc(100% - 28px);
+    min-height:42px;
+
+    box-sizing:border-box;
+
+    margin:0 auto 10px;
+    padding:9px 12px;
+
+    border:1px solid rgba(255,255,255,.34);
+    border-radius:10px;
+
+    background:rgba(20,20,20,.72);
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:13px;
+    font-weight:900;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.22);
+
+    transition:
+        background .18s,
+        border-color .18s,
+        transform .18s;
+}
+
+.youtube-community-link:hover{
+    background:rgba(255,0,0,.62);
+    border-color:rgba(255,255,255,.55);
+}
+
+.youtube-community-link:active{
+    transform:scale(.98);
+}
+
+/* =========================
+   ВСЕ ВІДЕО КАНАЛУ
+========================= */
+
+.youtube-all-videos-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:calc(100% - 28px);
+    min-height:42px;
+
+    box-sizing:border-box;
+
+    margin:0 auto 10px;
+    padding:9px 12px;
+
+    border:1px solid rgba(255,255,255,.34);
+    border-radius:10px;
+
+    background:rgba(20,20,20,.72);
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:13px;
+    font-weight:900;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.22);
+
+    transition:
+        background .18s,
+        border-color .18s,
+        transform .18s;
+}
+
+.youtube-all-videos-link:hover{
+    background:rgba(255,0,0,.62);
+    border-color:rgba(255,255,255,.55);
+}
+
+.youtube-all-videos-link:active{
+    transform:scale(.98);
 }
 
 
 /* =========================
-   ВЕРХНЯ ЧАСТИНА
+   ЄДИНИЙ БЛОК КАТЕГОРІЙ
 ========================= */
 
-.youtube-header{
-    text-align:center;
-    margin-bottom:10px;
+.youtube-category-panel{
+    position:relative;
+
+    margin:8px 0 12px;
+    padding:8px 7px 10px;
+
+    border:2px solid rgba(255,255,255,.34);
+    border-radius:14px;
+
+    background:rgba(8,8,8,.48);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.05),
+        0 5px 16px rgba(0,0,0,.22);
+
+    transition:
+        border-color .2s,
+        box-shadow .2s;
 }
 
-.youtube-title{
-    margin:2px 0 8px;
-    font-size:19px;
+.youtube-category-panel[data-active="videos"]{
+    border-color:rgba(255,55,55,.90);
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.05),
+        0 0 0 2px rgba(255,0,0,.15),
+        0 5px 16px rgba(0,0,0,.26);
+}
+
+.youtube-category-panel[data-active="shorts"]{
+    border-color:rgba(255,55,55,.90);
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.05),
+        0 0 0 2px rgba(255,0,0,.15),
+        0 5px 16px rgba(0,0,0,.26);
+}
+
+.youtube-category-panel[data-active="live"]{
+    border-color:rgba(255,55,55,.90);
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.05),
+        0 0 0 2px rgba(255,0,0,.15),
+        0 5px 16px rgba(0,0,0,.26);
+}
+
+.youtube-category-status{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+
+    margin:0 0 8px;
+    padding:6px 8px;
+
+    border-radius:8px;
+
+    background:rgba(255,0,0,.16);
+    color:#fff;
+
+    font-size:11px;
     font-weight:900;
-    color:#111;
+    letter-spacing:.25px;
+
+    text-align:center;
 }
 
-.youtube-subscribe{
+.youtube-category-status::before{
+    content:"";
+    width:8px;
+    height:8px;
+    flex:0 0 8px;
+
+    border-radius:50%;
+
+    background:#ff2020;
+
+    box-shadow:0 0 7px rgba(255,0,0,.85);
+}
+
+
+/* =========================
+   ГОЛОВНІ КАТЕГОРІЇ
+========================= */
+
+.youtube-main-tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:5px;
+
+    margin:8px 0 7px;
+}
+
+.youtube-tab{
+    min-width:0;
+
+    padding:9px 4px;
+
+    border:1px solid rgba(255,255,255,.34);
+    border-radius:9px;
+
+    background:rgba(20,20,20,.72);
+    color:#fff;
+
+    font-size:11px;
+    line-height:1.15;
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:
+        background .18s,
+        border-color .18s,
+        transform .18s;
+}
+
+.youtube-tab:hover{
+    background:rgba(255,0,0,.55);
+}
+
+.youtube-tab:active{
+    transform:scale(.97);
+}
+
+.youtube-tab.active{
+    position:relative;
+
+    background:#ff0000;
+    border-color:#fff;
+
+    color:#fff;
+
+    box-shadow:
+        0 0 0 2px rgba(255,0,0,.25),
+        0 4px 12px rgba(0,0,0,.28);
+}
+
+.youtube-tab.active::after{
+    content:"ВИБРАНО";
+
+    position:absolute;
+    left:50%;
+    bottom:-7px;
+
+    transform:translateX(-50%);
+
+    padding:1px 5px;
+
+    border-radius:5px;
+
+    background:#fff;
+    color:#d90000;
+
+    font-size:7px;
+    line-height:1.4;
+    font-weight:900;
+
+    letter-spacing:.25px;
+}
+
+/* =========================
+   ПІДКАТЕГОРІЇ
+========================= */
+
+.youtube-sub-tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+
+    margin:0 0 9px;
+}
+
+.youtube-sub-tab{
+    min-width:0;
+    min-height:38px;
+
+    padding:7px 6px;
+
+    border:1px solid rgba(255,255,255,.25);
+    border-radius:8px;
+
+    background:rgba(0,0,0,.56);
+    color:#fff;
+
+    font-size:12px;
+    line-height:1.15;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:
+        background .18s,
+        border-color .18s,
+        transform .18s;
+}
+
+.youtube-sub-tab:hover{
+    background:rgba(255,255,255,.13);
+}
+
+.youtube-sub-tab:active{
+    transform:scale(.98);
+}
+
+.youtube-sub-tab.active{
+    background:rgba(255,0,0,.84);
+    border-color:rgba(255,255,255,.55);
+}
+
+/* =========================
+   НАЗВА АКТИВНОГО СПИСКУ
+========================= */
+
+.youtube-current-title{
+    display:block;
+
+    margin:7px 0 8px;
+
+    text-align:center;
+
+    color:#fff;
+
+    font-size:15px;
+    font-weight:900;
+
+    text-decoration:none;
+
+    text-shadow:0 2px 4px rgba(0,0,0,.7);
+}
+
+.youtube-current-title:hover{
+    color:#ff5b5b;
+    text-decoration:underline;
+    text-underline-offset:3px;
+}
+
+/* =========================
+   ОДИН ПРОГРАВАЧ
+========================= */
+
+.youtube-player-wrap{
     width:100%;
+
     display:flex;
     justify-content:center;
-    min-height:50px;
-    overflow:hidden;
+    align-items:flex-start;
+
+    margin:0 auto 10px;
 }
 
+.youtube-player{
+    display:block;
+
+    width:315px;
+    height:177px;
+
+    border:0;
+    border-radius:10px;
+
+    background:#000;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.38);
+
+    transition:
+        width .22s,
+        height .22s;
+}
+
+.youtube-player.shorts{
+    width:275px;
+    height:489px;
+}
+
+/* =========================
+   КНОПКА АКТИВНОГО ПЛЕЙЛИСТА
+========================= */
+
+.youtube-playlist-open-link{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    width:calc(100% - 18px);
+    min-height:42px;
+
+    box-sizing:border-box;
+
+    margin:8px auto 10px;
+    padding:9px 12px;
+
+    border:1px solid rgba(255,255,255,.36);
+    border-radius:10px;
+
+    background:rgba(255,0,0,.86);
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:13px;
+    font-weight:900;
+
+    text-align:center;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.28);
+
+    transition:
+        background .18s,
+        transform .18s;
+}
+
+.youtube-playlist-open-link:hover{
+    background:#ff0000;
+}
+
+.youtube-playlist-open-link:active{
+    transform:scale(.98);
+}
+
+
+/* =========================
+   ПІДКАЗКА
+========================= */
+
+.youtube-note{
+    margin:10px 8px 0;
+    padding:8px 9px;
+
+    border-radius:9px;
+
+    background:rgba(0,0,0,.46);
+
+    color:rgba(255,255,255,.86);
+
+    font-size:11px;
+    line-height:1.35;
+
+    text-align:center;
+}
 
 /* =========================
    ЗАКРІПЛЕНА НИЖНЯ КНОПКА
@@ -237,13 +674,13 @@ body{
 
     padding:10px 14px 12px;
 
-    z-index:7;
+    z-index:8;
 
     background:linear-gradient(
         to top,
-        rgba(255,255,255,1) 68%,
-        rgba(255,255,255,.94) 82%,
-        rgba(255,255,255,0)
+        rgba(10,10,10,1) 68%,
+        rgba(10,10,10,.92) 84%,
+        rgba(10,10,10,0)
     );
 
     pointer-events:none;
@@ -291,22 +728,6 @@ body{
     transform:scale(.98);
 }
 
-
-/* =========================
-   SHORTS
-========================= */
-
-.sh-wrap{
-    width:100%;
-    display:flex;
-    justify-content:center;
-}
-
-
-/* =========================
-   МОБІЛЬНИЙ ЗАХИСТ
-========================= */
-
 @media(max-width:330px){
 
     .youtube-box,
@@ -314,8 +735,14 @@ body{
         width:100vw;
     }
 
-    .youtube-widget iframe.video-player{
-        width:calc(100vw - 14px);
+    .youtube-player{
+        width:calc(100vw - 16px);
+        height:calc((100vw - 16px) * .5625);
+    }
+
+    .youtube-player.shorts{
+        width:min(275px, calc(100vw - 30px));
+        height:min(489px, calc((100vw - 30px) * 1.778));
     }
 }
 </style>
@@ -327,11 +754,15 @@ body{
 
     <button
         id="foxHarkoYoutubeLoadBtn"
-        class="youtube-btn"
+        class="youtube-cover-btn"
         type="button"
         aria-controls="foxHarkoYoutubeWidget"
         aria-label="Показати YouTube Харка">
-        ▶ Показати YouTube
+
+        <span class="youtube-cover-label">
+            ▶ Показати YouTube
+        </span>
+
     </button>
 
 
@@ -348,17 +779,140 @@ body{
     <div
         id="foxHarkoYoutubeWidget"
         class="youtube-widget">
+
+        <div class="youtube-title">
+            YouTube • Харко
+        </div>
+
+
+        <div class="youtube-subscribe">
+
+            <iframe
+                id="foxHarkoYoutubeSubscribe"
+                width="160"
+                height="50"
+                title="Підписатися на YouTube канал Харка"
+                frameborder="0"
+                scrolling="no"
+                referrerpolicy="strict-origin-when-cross-origin">
+            </iframe>
+
+        </div>
+
+
+        <a
+            class="youtube-community-link"
+            href="https://www.youtube.com/@fox_harko/community"
+            target="_blank"
+            rel="noopener noreferrer">
+            💬 СПІЛЬНОТА
+        </a>
+
+
+        <a
+            class="youtube-all-videos-link"
+            href="https://www.youtube.com/playlist?list=UUWoKuErHW4Dwex8w-8RgZSA"
+            target="_blank"
+            rel="noopener noreferrer">
+            📺 ВСЕ ВІДЕО КАНАЛУ
+        </a>
+
+
+        <div
+            id="foxHarkoYoutubeCategoryPanel"
+            class="youtube-category-panel"
+            data-active="videos">
+
+            <div
+                id="foxHarkoYoutubeCategoryStatus"
+                class="youtube-category-status">
+                Вибрано: ВІДЕО
+            </div>
+
+            <div
+                class="youtube-main-tabs"
+                role="tablist"
+                aria-label="Категорії YouTube">
+
+            <button
+                class="youtube-tab active"
+                type="button"
+                data-category="videos">
+                ВІДЕО
+            </button>
+
+            <button
+                class="youtube-tab"
+                type="button"
+                data-category="shorts">
+                SHORTS
+            </button>
+
+            <button
+                class="youtube-tab"
+                type="button"
+                data-category="live">
+                ТРАНСЛЯЦІЇ
+            </button>
+
+        </div>
+
+
+        <div
+            id="foxHarkoYoutubeSubTabs"
+            class="youtube-sub-tabs">
+        </div>
+
+
+        <a
+            id="foxHarkoYoutubeCurrentTitle"
+            class="youtube-current-title"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer">
+        </a>
+
+
+        <div class="youtube-player-wrap">
+
+            <iframe
+                id="foxHarkoYoutubePlayer"
+                class="youtube-player"
+                title="YouTube Харко"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen>
+            </iframe>
+
+        </div>
+
+
+        <a
+            id="foxHarkoYoutubePlaylistOpen"
+            class="youtube-playlist-open-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer">
+            Відкрити плейлист на YouTube
+        </a>
+
+        </div>
+
+
+        <div class="youtube-note">
+            Вибери категорію та тип контенту. Програвач зміниться тут же,
+            без переходу на YouTube.
+        </div>
+
     </div>
 
 
-    <!-- ЦЯ КНОПКА ЗАВЖДИ ЗАЛИШАЄТЬСЯ ВНИЗУ,
-         НАВІТЬ КОЛИ КОНТЕНТ ВСЕРЕДИНІ ГОРТАЄТЬСЯ -->
     <div
         id="foxHarkoYoutubeFixedBottom"
         class="youtube-fixed-bottom">
 
         <a
-            id="foxHarkoYoutubeChannelLink"
             class="youtube-channel-link"
             href="https://www.youtube.com/channel/UCWoKuErHW4Dwex8w-8RgZSA"
             target="_blank"
@@ -374,158 +928,168 @@ body{
 <script>
 (() => {
 
-    const CHANNEL_ID = "UCWoKuErHW4Dwex8w-8RgZSA";
-
-    const UPLOADS_PLAYLIST =
-        "UUWoKuErHW4Dwex8w-8RgZSA";
-
-    const POPULAR_PLAYLIST =
-        "UULPWoKuErHW4Dwex8w-8RgZSA";
-
-    const SHORTS_PLAYLIST =
-        "UUSHWoKuErHW4Dwex8w-8RgZSA";
+    const CHANNEL_ID =
+        "UCWoKuErHW4Dwex8w-8RgZSA";
 
 
-    let youtubeLoaded = false;
+    /*
+       Системні YouTube-плейлисти каналу Харка.
+
+       UULF = звичайні відео
+       UULP = популярні відео
+       UUSH = Shorts
+       UUPS = популярні Shorts
+       UULV = трансляції
+       UUPV = популярні трансляції
+
+       Якщо YouTube у майбутньому змінить внутрішні
+       системні списки, достатньо змінити ID тут.
+    */
+
+    const DATA = {
+
+        videos: {
+            label: "ВІДЕО",
+            items: [
+                {
+                    label: "Відео",
+                    playlist: "UULFWoKuErHW4Dwex8w-8RgZSA",
+                    shorts: false
+                },
+                {
+                    label: "Популярні відео",
+                    playlist: "UULPWoKuErHW4Dwex8w-8RgZSA",
+                    shorts: false
+                }
+            ]
+        },
+
+        shorts: {
+            label: "SHORTS",
+            items: [
+                {
+                    label: "Shorts",
+                    playlist: "UUSHWoKuErHW4Dwex8w-8RgZSA",
+                    shorts: true
+                },
+                {
+                    label: "Популярні Shorts",
+                    playlist: "UUPSWoKuErHW4Dwex8w-8RgZSA",
+                    shorts: true
+                }
+            ]
+        },
+
+        live: {
+            label: "ТРАНСЛЯЦІЇ",
+            items: [
+                {
+                    label: "Трансляції",
+                    playlist: "UULVWoKuErHW4Dwex8w-8RgZSA",
+                    shorts: false
+                },
+                {
+                    label: "Популярні трансляції",
+                    playlist: "UUPVWoKuErHW4Dwex8w-8RgZSA",
+                    shorts: false
+                }
+            ]
+        }
+
+    };
 
 
-    const button =
-        document.getElementById("foxHarkoYoutubeLoadBtn");
+    let loaded = false;
+    let currentCategory = "videos";
+    let currentItemIndex = 0;
+
+
+    const loadBtn =
+        document.getElementById(
+            "foxHarkoYoutubeLoadBtn"
+        );
 
     const loader =
-        document.getElementById("foxHarkoYoutubeLoader");
+        document.getElementById(
+            "foxHarkoYoutubeLoader"
+        );
 
     const widget =
-        document.getElementById("foxHarkoYoutubeWidget");
+        document.getElementById(
+            "foxHarkoYoutubeWidget"
+        );
 
     const fixedBottom =
-        document.getElementById("foxHarkoYoutubeFixedBottom");
+        document.getElementById(
+            "foxHarkoYoutubeFixedBottom"
+        );
+
+    const player =
+        document.getElementById(
+            "foxHarkoYoutubePlayer"
+        );
+
+    const currentTitle =
+        document.getElementById(
+            "foxHarkoYoutubeCurrentTitle"
+        );
+
+    const playlistOpen =
+        document.getElementById(
+            "foxHarkoYoutubePlaylistOpen"
+        );
+
+    const subTabs =
+        document.getElementById(
+            "foxHarkoYoutubeSubTabs"
+        );
+
+    const categoryPanel =
+        document.getElementById(
+            "foxHarkoYoutubeCategoryPanel"
+        );
+
+    const categoryStatus =
+        document.getElementById(
+            "foxHarkoYoutubeCategoryStatus"
+        );
+
+    const subscribe =
+        document.getElementById(
+            "foxHarkoYoutubeSubscribe"
+        );
+
+    const mainTabs =
+        Array.from(
+            document.querySelectorAll(
+                ".youtube-tab"
+            )
+        );
 
 
-    if (!button || !loader || !widget || !fixedBottom) return;
+    function makeEmbedUrl(playlistId){
 
-
-    function createPlayer(playlistId, title, width, height, extraClass = ""){
-
-        const iframe = document.createElement("iframe");
-
-        iframe.className =
-            "video-player " + extraClass;
-
-        iframe.width = String(width);
-        iframe.height = String(height);
-
-        iframe.src =
+        return (
             "https://www.youtube.com/embed/videoseries" +
             "?list=" + encodeURIComponent(playlistId) +
             "&controls=1" +
             "&fs=1" +
             "&rel=0" +
-            "&playsinline=1";
-
-        iframe.title = title;
-        iframe.frameBorder = "0";
-
-        iframe.allow =
-            "accelerometer; autoplay; clipboard-write; " +
-            "encrypted-media; gyroscope; picture-in-picture; " +
-            "web-share; fullscreen";
-
-        iframe.referrerPolicy =
-            "strict-origin-when-cross-origin";
-
-        iframe.allowFullscreen = true;
-
-        return iframe;
-    }
-
-
-    function addSeparator(){
-        widget.appendChild(
-            document.createElement("hr")
+            "&playsinline=1"
         );
     }
 
 
-    function addTitle(text){
+    function makePlaylistUrl(playlistId){
 
-        const p =
-            document.createElement("p");
-
-        p.textContent = text;
-
-        widget.appendChild(p);
+        return (
+            "https://www.youtube.com/playlist?list=" +
+            encodeURIComponent(playlistId)
+        );
     }
 
 
-    function showWidget(){
-
-        loader.style.display = "none";
-
-        widget.classList.add("show");
-
-        /* Після відкриття YouTube показуємо
-           закріплену кнопку внизу. */
-        fixedBottom.classList.add("show");
-
-    }
-
-
-    button.addEventListener("click", function(event){
-
-        event.preventDefault();
-        event.stopPropagation();
-
-
-        if (youtubeLoaded) return;
-
-        youtubeLoaded = true;
-
-
-        button.style.display = "none";
-        loader.style.display = "flex";
-
-
-        /* =========================
-           ЗАГОЛОВОК
-        ========================= */
-
-        const header =
-            document.createElement("div");
-
-        header.className =
-            "youtube-header";
-
-
-        const title =
-            document.createElement("div");
-
-        title.className =
-            "youtube-title";
-
-        title.textContent =
-            "YouTube • Харко";
-
-
-        header.appendChild(title);
-
-
-        /* =========================
-           ПІДПИСКА
-        ========================= */
-
-        const subscribe =
-            document.createElement("div");
-
-        subscribe.className =
-            "youtube-subscribe";
-
-
-        const subscribeIframe =
-            document.createElement("iframe");
-
-        subscribeIframe.width = "160";
-        subscribeIframe.height = "50";
+    function setSubscribeUrl(){
 
         let origin = "";
 
@@ -535,152 +1099,249 @@ body{
         ){
             origin =
                 "&origin=" +
-                encodeURIComponent(window.location.origin);
+                encodeURIComponent(
+                    window.location.origin
+                );
         }
 
-        subscribeIframe.src =
+        subscribe.src =
             "https://www.youtube.com/subscribe_embed" +
             "?usegapi=1" +
-            "&channelid=" + encodeURIComponent(CHANNEL_ID) +
+            "&channelid=" +
+            encodeURIComponent(CHANNEL_ID) +
             "&layout=full" +
             "&count=default" +
             origin;
-
-        subscribeIframe.title =
-            "Підписатися на YouTube канал Харка";
-
-        subscribeIframe.frameBorder = "0";
-        subscribeIframe.scrolling = "no";
-
-        subscribeIframe.referrerPolicy =
-            "strict-origin-when-cross-origin";
+    }
 
 
-        subscribe.appendChild(
-            subscribeIframe
-        );
+    function renderSubTabs(){
 
-        header.appendChild(
-            subscribe
-        );
+        subTabs.innerHTML = "";
 
-        widget.appendChild(
-            header
-        );
+        const items =
+            DATA[currentCategory].items;
 
 
-        /* =========================
-           ВСІ ВІДЕО
-        ========================= */
+        items.forEach((item, index) => {
 
-        addTitle(
-            "Все відео каналу"
-        );
+            const btn =
+                document.createElement("button");
 
+            btn.type = "button";
 
-        const allVideos =
-            createPlayer(
-                UPLOADS_PLAYLIST,
-                "Всі відео YouTube каналу Харка",
-                315,
-                177
+            btn.className =
+                "youtube-sub-tab" +
+                (
+                    index === currentItemIndex
+                    ? " active"
+                    : ""
+                );
+
+            btn.textContent =
+                item.label;
+
+            btn.addEventListener(
+                "click",
+                () => {
+
+                    currentItemIndex = index;
+
+                    renderSubTabs();
+                    updatePlayer();
+
+                }
             );
 
+            subTabs.appendChild(btn);
 
-        widget.appendChild(
-            allVideos
-        );
+        });
 
-
-        addSeparator();
+    }
 
 
-        /* =========================
-           ПОПУЛЯРНІ
-        ========================= */
+    function updatePlayer(){
 
-        addTitle(
-            "Популярні відео"
-        );
+        const item =
+            DATA[currentCategory]
+                .items[currentItemIndex];
 
 
-        const popularVideos =
-            createPlayer(
-                POPULAR_PLAYLIST,
-                "Популярні відео YouTube каналу Харка",
-                315,
-                177
+        currentTitle.textContent =
+            item.label;
+
+        currentTitle.href =
+            makePlaylistUrl(
+                item.playlist
             );
 
-
-        widget.appendChild(
-            popularVideos
-        );
-
-
-        addSeparator();
-
-
-        /* =========================
-           SHORTS
-        ========================= */
-
-        addTitle(
-            "SHORTS"
-        );
-
-
-        const shortsWrap =
-            document.createElement("div");
-
-        shortsWrap.className =
-            "sh-wrap";
-
-
-        const shorts =
-            createPlayer(
-                SHORTS_PLAYLIST,
-                "YouTube Shorts каналу Харка",
-                275,
-                557
+        playlistOpen.href =
+            makePlaylistUrl(
+                item.playlist
             );
 
-
-        shortsWrap.appendChild(
-            shorts
-        );
-
-        widget.appendChild(
-            shortsWrap
-        );
+        playlistOpen.textContent =
+            "Відкрити плейлист «" +
+            item.label +
+            "» на YouTube";
 
 
-        let shown = false;
+        if (item.shorts){
 
-        function ready(){
+            player.classList.add(
+                "shorts"
+            );
 
-            if (shown) return;
+        }else{
 
-            shown = true;
-
-            showWidget();
+            player.classList.remove(
+                "shorts"
+            );
 
         }
 
 
-        allVideos.addEventListener(
-            "load",
-            ready,
-            { once:true }
-        );
+        /*
+          Заміна src перемикає плейлист
+          у тому самому iframe.
+        */
+
+        player.src =
+            makeEmbedUrl(
+                item.playlist
+            );
 
 
-        setTimeout(
-            ready,
-            3500
+        /*
+          Після перемикання повертаємося
+          до верхньої частини контенту,
+          щоб програвач не "загубився".
+        */
+
+        const top =
+            Math.max(
+                0,
+                player.offsetTop - 120
+            );
+
+        widget.scrollTo({
+            top: top,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    function setCategory(category){
+
+        if (!DATA[category]) return;
+
+        currentCategory =
+            category;
+
+        currentItemIndex =
+            0;
+
+
+        mainTabs.forEach(tab => {
+
+            tab.classList.toggle(
+                "active",
+                tab.dataset.category === category
+            );
+
+        });
+
+        categoryPanel.dataset.active =
+            category;
+
+        categoryStatus.textContent =
+            "Вибрано: " +
+            DATA[category].label;
+
+
+        renderSubTabs();
+        updatePlayer();
+
+    }
+
+
+    mainTabs.forEach(tab => {
+
+        tab.addEventListener(
+            "click",
+            () => {
+
+                setCategory(
+                    tab.dataset.category
+                );
+
+            }
         );
 
     });
+
+
+    loadBtn.addEventListener(
+        "click",
+        event => {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (loaded) return;
+
+            loaded = true;
+
+            loadBtn.style.display =
+                "none";
+
+            loader.style.display =
+                "flex";
+
+
+            setSubscribeUrl();
+
+            renderSubTabs();
+            updatePlayer();
+
+
+            let shown = false;
+
+            function show(){
+
+                if (shown) return;
+
+                shown = true;
+
+                loader.style.display =
+                    "none";
+
+                widget.classList.add(
+                    "show"
+                );
+
+                fixedBottom.classList.add(
+                    "show"
+                );
+
+            }
+
+
+            player.addEventListener(
+                "load",
+                show,
+                { once:true }
+            );
+
+
+            setTimeout(
+                show,
+                3500
+            );
+
+        }
+    );
 
 })();
 </script>

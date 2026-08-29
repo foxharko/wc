@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+html,
+body{
+    margin:0;
+    padding:0;
+}
+
+.facebook-box{
+    width:330px;
+    height:410px;
+    margin:0 auto;
+    font-family:Arial,sans-serif;
+    position:relative;
+    overflow:hidden;
+    border-radius:18px;
+
+    background-image:url("fox_harko_facebook_330x410.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
+}
+
+.facebook-box::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,.10),
+        rgba(0,0,0,.38)
+    );
+    pointer-events:none;
+}
+
+.facebook-btn{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+
+    width:80%;
+    max-width:250px;
+
+    padding:13px 16px;
+
+    font-size:17px;
+    font-weight:900;
+    letter-spacing:.3px;
+
+    border:2px solid rgba(255,255,255,.95);
+    border-radius:12px;
+
+    background:rgba(24,119,242,.72);
+    color:#fff;
+
+    cursor:pointer;
+
+    transition:
+        background .2s,
+        box-shadow .2s,
+        transform .2s;
+
+    z-index:2;
+
+    text-shadow:0 2px 5px rgba(0,0,0,.7);
+
+    box-shadow:
+        0 0 0 2px rgba(24,119,242,.35),
+        0 6px 18px rgba(0,0,0,.45);
+
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+}
+
+.facebook-btn:hover{
+    background:rgba(24,119,242,.92);
+
+    box-shadow:
+        0 0 12px rgba(24,119,242,.8),
+        0 7px 18px rgba(0,0,0,.5);
+}
+
+.facebook-btn:active{
+    transform:translate(-50%,-50%) scale(.98);
+}
+
+.facebook-loader{
+    display:none;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+
+    padding:20px;
+
+    color:#fff;
+
+    position:absolute;
+    inset:0;
+
+    z-index:2;
+
+    background:rgba(0,0,0,.35);
+}
+
+.facebook-spinner{
+    width:24px;
+    height:24px;
+
+    border:3px solid rgba(255,255,255,.35);
+    border-top-color:#fff;
+
+    border-radius:50%;
+
+    animation:facebook-spin .8s linear infinite;
+}
+
+@keyframes facebook-spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.facebook-widget{
+    width:330px;
+    height:410px;
+
+    opacity:0;
+
+    transition:opacity .4s;
+
+    position:relative;
+    z-index:2;
+}
+
+.facebook-widget.show{
+    opacity:1;
+}
+
+.facebook-widget iframe{
+    display:block;
+
+    width:330px;
+    height:410px;
+
+    border:0;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="facebook-box">
+
+    <button
+        id="foxHarkoFacebookLoadBtn"
+        class="facebook-btn"
+        type="button"
+        aria-controls="foxHarkoFacebookWidget">
+
+        Показати Facebook
+
+    </button>
+
+
+    <div
+        id="foxHarkoFacebookLoader"
+        class="facebook-loader">
+
+        <div class="facebook-spinner"></div>
+
+        <span>Завантаження Facebook...</span>
+
+    </div>
+
+
+    <div
+        id="foxHarkoFacebookWidget"
+        class="facebook-widget">
+    </div>
+
+</div>
+
+
+<script>
+
+(() => {
+
+    let facebookLoaded = false;
+
+    const button =
+        document.getElementById("foxHarkoFacebookLoadBtn");
+
+    const loader =
+        document.getElementById("foxHarkoFacebookLoader");
+
+    const widget =
+        document.getElementById("foxHarkoFacebookWidget");
+
+
+    if (!button || !loader || !widget) return;
+
+
+    /*
+        ВКАЖИ ТУТ URL СВОЄЇ FACEBOOK-СТОРІНКИ
+    */
+
+    const facebookPage =
+        "https://www.facebook.com/fox_harko";
+
+
+    button.addEventListener("click", function(event){
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (facebookLoaded) return;
+
+        facebookLoaded = true;
+
+
+        button.style.display = "none";
+
+        loader.style.display = "flex";
+
+
+        const iframe =
+            document.createElement("iframe");
+
+
+        const pluginURL =
+            "https://www.facebook.com/plugins/page.php" +
+
+            "?href=" +
+            encodeURIComponent(facebookPage) +
+
+            "&tabs=timeline" +
+
+            "&width=330" +
+
+            "&height=410" +
+
+            "&small_header=false" +
+
+            "&adapt_container_width=true" +
+
+            "&hide_cover=false" +
+
+            "&show_facepile=true";
+
+
+        iframe.src = pluginURL;
+
+        iframe.width = "330";
+
+        iframe.height = "410";
+
+        iframe.style.border = "none";
+
+        iframe.style.overflow = "hidden";
+
+        iframe.scrolling = "no";
+
+        iframe.frameBorder = "0";
+
+        iframe.allowFullscreen = true;
+
+        iframe.allow =
+            "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share";
+
+
+        iframe.onload = function(){
+
+            loader.style.display = "none";
+
+            widget.classList.add("show");
+
+        };
+
+
+        widget.appendChild(iframe);
+
+    });
+
+})();
+
+</script>
+
+</body>
+</html>

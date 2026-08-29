@@ -4,11 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>YouTube • Харко</title>
+
 <style>
 html,
 body{
     margin:0;
     padding:0;
+    background:transparent;
 }
 
 .youtube-box{
@@ -32,18 +35,19 @@ body{
     content:"";
     position:absolute;
     inset:0;
-
     background:linear-gradient(
         to bottom,
         rgba(0,0,0,.05),
-        rgba(0,0,0,.32)
+        rgba(0,0,0,.35)
     );
-
     pointer-events:none;
+    z-index:1;
 }
 
 
-/* КНОПКА */
+/* =========================
+   ГОЛОВНА КНОПКА
+========================= */
 
 .youtube-btn{
     position:absolute;
@@ -62,7 +66,7 @@ body{
     border:2px solid rgba(255,255,255,.95);
     border-radius:12px;
 
-    background:rgba(255,0,0,.80);
+    background:rgba(255,0,0,.82);
     color:#fff;
 
     cursor:pointer;
@@ -85,8 +89,7 @@ body{
 }
 
 .youtube-btn:hover{
-    background:rgba(255,0,0,.95);
-
+    background:rgba(255,0,0,.96);
     box-shadow:
         0 0 12px rgba(255,0,0,.7),
         0 7px 18px rgba(0,0,0,.45);
@@ -97,22 +100,21 @@ body{
 }
 
 
-/* ЗАВАНТАЖЕННЯ */
+/* =========================
+   ЗАВАНТАЖЕННЯ
+========================= */
 
 .youtube-loader{
     display:none;
-
-    justify-content:center;
-    align-items:center;
-
-    gap:10px;
-
     position:absolute;
     inset:0;
 
-    color:#fff;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
 
-    background:rgba(0,0,0,.40);
+    color:#fff;
+    background:rgba(0,0,0,.45);
 
     z-index:4;
 }
@@ -136,7 +138,9 @@ body{
 }
 
 
-/* КОНТЕНТ */
+/* =========================
+   ВНУТРІШНІЙ YOUTUBE-БЛОК
+========================= */
 
 .youtube-widget{
     position:absolute;
@@ -147,10 +151,12 @@ body{
 
     box-sizing:border-box;
 
-    padding:10px 7px;
+    /* Нижній відступ потрібен, щоб закріплена кнопка
+       не перекривала останній контент. */
+    padding:10px 7px 82px;
 
-    overflow-y:auto;
     overflow-x:hidden;
+    overflow-y:auto;
 
     background:#fff;
 
@@ -160,6 +166,8 @@ body{
     transition:opacity .4s;
 
     z-index:5;
+
+    scrollbar-width:thin;
 }
 
 .youtube-widget.show{
@@ -167,51 +175,148 @@ body{
     visibility:visible;
 }
 
+.youtube-widget iframe{
+    display:block;
+    margin:0 auto;
+    border:0;
+}
+
 .youtube-widget p{
-    margin:8px 0 7px;
-
+    margin:10px 0 7px;
     text-align:center;
-
+    color:#202124;
     font-size:15px;
-    font-weight:700;
-
-    color:#222;
+    font-weight:900;
 }
 
 .youtube-widget hr{
     border:0;
     border-top:1px solid #ddd;
-
-    margin:12px 0;
-}
-
-.youtube-widget iframe{
-    display:block;
-
-    margin:0 auto;
-
-    border:0;
+    margin:14px 0;
 }
 
 
-/* ПІДПИСКА */
+/* =========================
+   ВЕРХНЯ ЧАСТИНА
+========================= */
+
+.youtube-header{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.youtube-title{
+    margin:2px 0 8px;
+    font-size:19px;
+    font-weight:900;
+    color:#111;
+}
 
 .youtube-subscribe{
     width:100%;
-    text-align:center;
-
-    margin-bottom:8px;
+    display:flex;
+    justify-content:center;
+    min-height:50px;
+    overflow:hidden;
 }
 
 
-/* SHORTS */
+/* =========================
+   ЗАКРІПЛЕНА НИЖНЯ КНОПКА
+========================= */
+
+.youtube-fixed-bottom{
+    display:none;
+
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+
+    box-sizing:border-box;
+
+    padding:10px 14px 12px;
+
+    z-index:7;
+
+    background:linear-gradient(
+        to top,
+        rgba(255,255,255,1) 68%,
+        rgba(255,255,255,.94) 82%,
+        rgba(255,255,255,0)
+    );
+
+    pointer-events:none;
+}
+
+.youtube-fixed-bottom.show{
+    display:block;
+}
+
+.youtube-channel-link{
+    display:flex;
+
+    width:100%;
+    height:46px;
+
+    box-sizing:border-box;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:11px;
+
+    background:#ff0000;
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:15px;
+    font-weight:900;
+
+    box-shadow:0 4px 14px rgba(0,0,0,.30);
+
+    transition:
+        background .2s,
+        transform .2s;
+
+    pointer-events:auto;
+}
+
+.youtube-channel-link:hover{
+    background:#d90000;
+}
+
+.youtube-channel-link:active{
+    transform:scale(.98);
+}
+
+
+/* =========================
+   SHORTS
+========================= */
 
 .sh-wrap{
     width:100%;
-
     display:flex;
-
     justify-content:center;
+}
+
+
+/* =========================
+   МОБІЛЬНИЙ ЗАХИСТ
+========================= */
+
+@media(max-width:330px){
+
+    .youtube-box,
+    .youtube-widget{
+        width:100vw;
+    }
+
+    .youtube-widget iframe.video-player{
+        width:calc(100vw - 14px);
+    }
 }
 </style>
 </head>
@@ -223,10 +328,10 @@ body{
     <button
         id="foxHarkoYoutubeLoadBtn"
         class="youtube-btn"
-        type="button">
-
+        type="button"
+        aria-controls="foxHarkoYoutubeWidget"
+        aria-label="Показати YouTube Харка">
         ▶ Показати YouTube
-
     </button>
 
 
@@ -235,7 +340,6 @@ body{
         class="youtube-loader">
 
         <div class="youtube-spinner"></div>
-
         <span>Завантаження YouTube...</span>
 
     </div>
@@ -246,13 +350,44 @@ body{
         class="youtube-widget">
     </div>
 
+
+    <!-- ЦЯ КНОПКА ЗАВЖДИ ЗАЛИШАЄТЬСЯ ВНИЗУ,
+         НАВІТЬ КОЛИ КОНТЕНТ ВСЕРЕДИНІ ГОРТАЄТЬСЯ -->
+    <div
+        id="foxHarkoYoutubeFixedBottom"
+        class="youtube-fixed-bottom">
+
+        <a
+            id="foxHarkoYoutubeChannelLink"
+            class="youtube-channel-link"
+            href="https://www.youtube.com/channel/UCWoKuErHW4Dwex8w-8RgZSA"
+            target="_blank"
+            rel="noopener noreferrer">
+            Відкрити канал Харка на YouTube
+        </a>
+
+    </div>
+
 </div>
 
 
 <script>
 (() => {
 
+    const CHANNEL_ID = "UCWoKuErHW4Dwex8w-8RgZSA";
+
+    const UPLOADS_PLAYLIST =
+        "UUWoKuErHW4Dwex8w-8RgZSA";
+
+    const POPULAR_PLAYLIST =
+        "UULPWoKuErHW4Dwex8w-8RgZSA";
+
+    const SHORTS_PLAYLIST =
+        "UUSHWoKuErHW4Dwex8w-8RgZSA";
+
+
     let youtubeLoaded = false;
+
 
     const button =
         document.getElementById("foxHarkoYoutubeLoadBtn");
@@ -263,8 +398,77 @@ body{
     const widget =
         document.getElementById("foxHarkoYoutubeWidget");
 
+    const fixedBottom =
+        document.getElementById("foxHarkoYoutubeFixedBottom");
 
-    if (!button || !loader || !widget) return;
+
+    if (!button || !loader || !widget || !fixedBottom) return;
+
+
+    function createPlayer(playlistId, title, width, height, extraClass = ""){
+
+        const iframe = document.createElement("iframe");
+
+        iframe.className =
+            "video-player " + extraClass;
+
+        iframe.width = String(width);
+        iframe.height = String(height);
+
+        iframe.src =
+            "https://www.youtube.com/embed/videoseries" +
+            "?list=" + encodeURIComponent(playlistId) +
+            "&controls=1" +
+            "&fs=1" +
+            "&rel=0" +
+            "&playsinline=1";
+
+        iframe.title = title;
+        iframe.frameBorder = "0";
+
+        iframe.allow =
+            "accelerometer; autoplay; clipboard-write; " +
+            "encrypted-media; gyroscope; picture-in-picture; " +
+            "web-share; fullscreen";
+
+        iframe.referrerPolicy =
+            "strict-origin-when-cross-origin";
+
+        iframe.allowFullscreen = true;
+
+        return iframe;
+    }
+
+
+    function addSeparator(){
+        widget.appendChild(
+            document.createElement("hr")
+        );
+    }
+
+
+    function addTitle(text){
+
+        const p =
+            document.createElement("p");
+
+        p.textContent = text;
+
+        widget.appendChild(p);
+    }
+
+
+    function showWidget(){
+
+        loader.style.display = "none";
+
+        widget.classList.add("show");
+
+        /* Після відкриття YouTube показуємо
+           закріплену кнопку внизу. */
+        fixedBottom.classList.add("show");
+
+    }
 
 
     button.addEventListener("click", function(event){
@@ -279,141 +483,202 @@ body{
 
 
         button.style.display = "none";
-
         loader.style.display = "flex";
 
 
-        widget.innerHTML = `
+        /* =========================
+           ЗАГОЛОВОК
+        ========================= */
 
-            <div class="youtube-subscribe">
+        const header =
+            document.createElement("div");
 
-                <iframe
-                    width="160"
-                    height="50"
-
-                    src="https://www.youtube.com/subscribe_embed?usegapi=1&channelid=UCDrxhmXaRdUVOmazGRbjSBg&layout=full&count=default"
-
-                    title="Підписатися на YouTube канал"
-
-                    frameborder="0"
-
-                    scrolling="no">
-                </iframe>
-
-            </div>
+        header.className =
+            "youtube-header";
 
 
-            <p>Все відео каналу</p>
+        const title =
+            document.createElement("div");
 
-            <iframe
-                width="315"
-                height="177"
+        title.className =
+            "youtube-title";
 
-                src="https://www.youtube.com/embed/videoseries?list=UUDrxhmXaRdUVOmazGRbjSBg"
-
-                title="Всі відео каналу"
-
-                frameborder="0"
-
-                allow="
-                    accelerometer;
-                    autoplay;
-                    clipboard-write;
-                    encrypted-media;
-                    gyroscope;
-                    picture-in-picture;
-                    web-share
-                "
-
-                allowfullscreen>
-            </iframe>
+        title.textContent =
+            "YouTube • Харко";
 
 
-            <hr>
+        header.appendChild(title);
 
 
-            <p>Популярні відео</p>
+        /* =========================
+           ПІДПИСКА
+        ========================= */
 
-            <iframe
-                width="315"
-                height="177"
+        const subscribe =
+            document.createElement("div");
 
-                src="https://www.youtube.com/embed/videoseries?list=UULPDrxhmXaRdUVOmazGRbjSBg"
-
-                title="Популярні відео"
-
-                frameborder="0"
-
-                allow="
-                    accelerometer;
-                    autoplay;
-                    clipboard-write;
-                    encrypted-media;
-                    gyroscope;
-                    picture-in-picture;
-                    web-share
-                "
-
-                allowfullscreen>
-            </iframe>
+        subscribe.className =
+            "youtube-subscribe";
 
 
-            <hr>
+        const subscribeIframe =
+            document.createElement("iframe");
+
+        subscribeIframe.width = "160";
+        subscribeIframe.height = "50";
+
+        let origin = "";
+
+        if (
+            window.location.protocol === "http:" ||
+            window.location.protocol === "https:"
+        ){
+            origin =
+                "&origin=" +
+                encodeURIComponent(window.location.origin);
+        }
+
+        subscribeIframe.src =
+            "https://www.youtube.com/subscribe_embed" +
+            "?usegapi=1" +
+            "&channelid=" + encodeURIComponent(CHANNEL_ID) +
+            "&layout=full" +
+            "&count=default" +
+            origin;
+
+        subscribeIframe.title =
+            "Підписатися на YouTube канал Харка";
+
+        subscribeIframe.frameBorder = "0";
+        subscribeIframe.scrolling = "no";
+
+        subscribeIframe.referrerPolicy =
+            "strict-origin-when-cross-origin";
 
 
-            <p>SHORTS</p>
+        subscribe.appendChild(
+            subscribeIframe
+        );
 
-            <div class="sh-wrap">
+        header.appendChild(
+            subscribe
+        );
 
-                <iframe
-                    width="275"
-                    height="557"
-
-                    src="https://www.youtube.com/embed/videoseries?list=UUSHDrxhmXaRdUVOmazGRbjSBg"
-
-                    title="YouTube Shorts"
-
-                    frameborder="0"
-
-                    allow="
-                        accelerometer;
-                        autoplay;
-                        clipboard-write;
-                        encrypted-media;
-                        gyroscope;
-                        picture-in-picture;
-                        web-share
-                    "
-
-                    allowfullscreen>
-                </iframe>
-
-            </div>
-
-        `;
+        widget.appendChild(
+            header
+        );
 
 
-        const iframe =
-            widget.querySelector("iframe");
+        /* =========================
+           ВСІ ВІДЕО
+        ========================= */
+
+        addTitle(
+            "Все відео каналу"
+        );
 
 
-        if (iframe){
+        const allVideos =
+            createPlayer(
+                UPLOADS_PLAYLIST,
+                "Всі відео YouTube каналу Харка",
+                315,
+                177
+            );
 
-            iframe.addEventListener("load", function(){
 
-                loader.style.display = "none";
+        widget.appendChild(
+            allVideos
+        );
 
-                widget.classList.add("show");
 
-            });
+        addSeparator();
 
-        }else{
 
-            loader.style.display = "none";
+        /* =========================
+           ПОПУЛЯРНІ
+        ========================= */
 
-            widget.classList.add("show");
+        addTitle(
+            "Популярні відео"
+        );
+
+
+        const popularVideos =
+            createPlayer(
+                POPULAR_PLAYLIST,
+                "Популярні відео YouTube каналу Харка",
+                315,
+                177
+            );
+
+
+        widget.appendChild(
+            popularVideos
+        );
+
+
+        addSeparator();
+
+
+        /* =========================
+           SHORTS
+        ========================= */
+
+        addTitle(
+            "SHORTS"
+        );
+
+
+        const shortsWrap =
+            document.createElement("div");
+
+        shortsWrap.className =
+            "sh-wrap";
+
+
+        const shorts =
+            createPlayer(
+                SHORTS_PLAYLIST,
+                "YouTube Shorts каналу Харка",
+                275,
+                557
+            );
+
+
+        shortsWrap.appendChild(
+            shorts
+        );
+
+        widget.appendChild(
+            shortsWrap
+        );
+
+
+        let shown = false;
+
+        function ready(){
+
+            if (shown) return;
+
+            shown = true;
+
+            showWidget();
 
         }
+
+
+        allVideos.addEventListener(
+            "load",
+            ready,
+            { once:true }
+        );
+
+
+        setTimeout(
+            ready,
+            3500
+        );
 
     });
 

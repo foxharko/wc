@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* =========================================================
+   БАЗОВІ НАЛАШТУВАННЯ
+========================================================= */
+
+html,
+body{
+    margin:0;
+    padding:0;
+}
+
+
+/* =========================================================
+   TWITCH БЛОК
+   Розмір: 330 × 630
+========================================================= */
+
+.twitch-box{
+
+    width:330px;
+    height:630px;
+
+    margin:0 auto;
+
+    font-family:Arial,sans-serif;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:18px;
+
+    background:
+        #0e0e10
+        url("fox_harko_twitch_330x630.png")
+        center / cover
+        no-repeat;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.30);
+}
+
+
+/* затемнення фонового зображення */
+
+.twitch-box::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.05),
+            rgba(0,0,0,.38)
+        );
+
+    pointer-events:none;
+
+    z-index:1;
+}
+
+
+/* =========================================================
+   КНОПКА "ПОКАЗАТИ TWITCH"
+========================================================= */
+
+.twitch-load-btn{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    width:80%;
+    max-width:250px;
+
+    padding:13px 16px;
+
+    box-sizing:border-box;
+
+    font-size:17px;
+    font-weight:900;
+
+    letter-spacing:.3px;
+
+    border:
+        2px solid rgba(255,255,255,.95);
+
+    border-radius:12px;
+
+    background:
+        rgba(145,70,255,.82);
+
+    color:#fff;
+
+    cursor:pointer;
+
+    z-index:3;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,.70);
+
+    box-shadow:
+        0 0 0 2px rgba(145,70,255,.25),
+        0 6px 18px rgba(0,0,0,.40);
+
+    backdrop-filter:blur(3px);
+
+    -webkit-backdrop-filter:blur(3px);
+
+    transition:
+        background .2s,
+        box-shadow .2s,
+        transform .2s;
+}
+
+
+.twitch-load-btn:hover{
+
+    background:
+        rgba(145,70,255,.98);
+
+    box-shadow:
+        0 0 14px rgba(145,70,255,.70),
+        0 7px 20px rgba(0,0,0,.45);
+}
+
+
+.twitch-load-btn:active{
+
+    transform:
+        translate(-50%,-50%)
+        scale(.98);
+}
+
+
+/* =========================================================
+   ЗАВАНТАЖЕННЯ
+========================================================= */
+
+.twitch-loader{
+
+    display:none;
+
+    position:absolute;
+
+    inset:0;
+
+    justify-content:center;
+    align-items:center;
+
+    gap:10px;
+
+    color:#fff;
+
+    background:
+        rgba(0,0,0,.52);
+
+    font-size:14px;
+    font-weight:700;
+
+    z-index:4;
+}
+
+
+.twitch-spinner{
+
+    width:24px;
+    height:24px;
+
+    border:
+        3px solid rgba(255,255,255,.30);
+
+    border-top-color:#9146ff;
+
+    border-radius:50%;
+
+    animation:
+        twitch-spin .8s linear infinite;
+}
+
+
+@keyframes twitch-spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   ЗАВАНТАЖЕНИЙ TWITCH
+========================================================= */
+
+.twitch-widget{
+
+    position:absolute;
+
+    inset:0;
+
+    width:330px;
+    height:630px;
+
+    opacity:0;
+    visibility:hidden;
+
+    background:#000;
+
+    transition:
+        opacity .4s;
+
+    z-index:5;
+}
+
+
+.twitch-widget.show{
+
+    opacity:1;
+    visibility:visible;
+}
+
+
+/* =========================================================
+   TWITCH PLAYER
+========================================================= */
+
+.twitch-player-area{
+
+    position:absolute;
+
+    top:0;
+    left:0;
+    right:0;
+
+    /*
+       630px загальна висота
+       мінус 64px нижня панель
+    */
+
+    bottom:64px;
+
+    background:#000;
+
+    overflow:hidden;
+}
+
+
+.twitch-player-area iframe{
+
+    display:block;
+
+    width:100%;
+    height:100%;
+
+    border:0;
+
+    background:#000;
+}
+
+
+/* =========================================================
+   НИЖНЯ ЗАКРІПЛЕНА ПАНЕЛЬ
+========================================================= */
+
+.twitch-bottom-bar{
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    width:100%;
+    height:64px;
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:7px;
+
+    padding:8px;
+
+    box-sizing:border-box;
+
+    background:#18181b;
+
+    border-top:
+        1px solid rgba(255,255,255,.16);
+
+    z-index:10;
+}
+
+
+/* =========================================================
+   КНОПКИ
+========================================================= */
+
+.twitch-action-btn{
+
+    min-width:0;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    box-sizing:border-box;
+
+    padding:5px;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    border:
+        1px solid rgba(255,255,255,.20);
+
+    border-radius:9px;
+
+    background:#2f2f35;
+
+    color:#fff;
+
+    font-family:Arial,sans-serif;
+
+    font-size:12px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:
+        background .2s,
+        transform .15s;
+}
+
+
+.twitch-action-btn:hover{
+
+    background:#3d3d44;
+}
+
+
+.twitch-action-btn:active{
+
+    transform:scale(.97);
+}
+
+
+/* Twitch фіолетова кнопка */
+
+.twitch-action-primary{
+
+    background:#9146ff;
+}
+
+
+.twitch-action-primary:hover{
+
+    background:#a970ff;
+}
+
+
+/* =========================================================
+   ОКРЕМЕ ВІКНО
+   ПЛЕЄР ЗВЕРХУ
+   ЧАТ ЗНИЗУ
+========================================================= */
+
+body.twitch-popout-mode{
+
+    margin:0;
+    padding:0;
+
+    width:100vw;
+    height:100vh;
+
+    overflow:hidden;
+
+    background:#0e0e10;
+}
+
+
+.twitch-popout{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100vw;
+    height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    background:#0e0e10;
+}
+
+
+/* =========================================================
+   ПЛЕЄР У НОВОМУ ВІКНІ
+========================================================= */
+
+.twitch-popout-player{
+
+    width:100%;
+
+    height:52vh;
+
+    min-height:186px;
+
+    flex-shrink:0;
+
+    background:#000;
+}
+
+
+.twitch-popout-player iframe{
+
+    display:block;
+
+    width:100%;
+    height:100%;
+
+    border:0;
+
+    background:#000;
+}
+
+
+/* =========================================================
+   ЧАТ У НОВОМУ ВІКНІ
+========================================================= */
+
+.twitch-popout-chat{
+
+    width:100%;
+
+    flex:1;
+
+    min-height:200px;
+
+    background:#18181b;
+}
+
+
+.twitch-popout-chat iframe{
+
+    display:block;
+
+    width:100%;
+    height:100%;
+
+    border:0;
+}
+
+
+/* =========================================================
+   МОБІЛЬНИЙ РЕЖИМ НОВОГО ВІКНА
+========================================================= */
+
+@media(max-width:600px){
+
+    .twitch-popout-player{
+
+        height:40vh;
+
+    }
+
+}
+
+
+@media(max-height:650px){
+
+    .twitch-popout-player{
+
+        height:50vh;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     ОСНОВНИЙ TWITCH БЛОК
+===================================================== -->
+
+<div
+    id="foxHarkoTwitchBox"
+    class="twitch-box"
+>
+
+
+    <!-- Кнопка початкового завантаження -->
+
+    <button
+        id="foxHarkoTwitchLoadBtn"
+        class="twitch-load-btn"
+        type="button"
+    >
+        Показати Twitch
+    </button>
+
+
+
+    <!-- Завантаження -->
+
+    <div
+        id="foxHarkoTwitchLoader"
+        class="twitch-loader"
+    >
+
+        <div
+            class="twitch-spinner"
+        ></div>
+
+        <span>
+            Завантаження Twitch...
+        </span>
+
+    </div>
+
+
+
+    <!-- Завантажений Twitch -->
+
+    <div
+        id="foxHarkoTwitchWidget"
+        class="twitch-widget"
+    >
+
+
+        <!-- Twitch Player -->
+
+        <div
+            id="foxHarkoTwitchPlayer"
+            class="twitch-player-area"
+        ></div>
+
+
+
+        <!-- Нижня панель -->
+
+        <div
+            class="twitch-bottom-bar"
+        >
+
+
+            <!-- Перейти на Twitch -->
+
+            <a
+                class="
+                    twitch-action-btn
+                    twitch-action-primary
+                "
+
+                href="https://www.twitch.tv/fox_harko"
+
+                target="_blank"
+
+                rel="noopener noreferrer"
+            >
+                Перейти на Twitch
+            </a>
+
+
+
+            <!-- Відкрити чат -->
+
+            <button
+                id="foxHarkoTwitchChatBtn"
+
+                class="twitch-action-btn"
+
+                type="button"
+            >
+                Відкрити чат
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+(() => {
+
+
+/* =========================================================
+   НАЛАШТУВАННЯ
+========================================================= */
+
+const TWITCH_CHANNEL =
+    "fox_harko";
+
+
+/*
+    Ваш основний домен.
+
+    Twitch вимагає параметр parent.
+
+    На:
+    https://fox-harko.pp.ua/beta/1/
+
+    значення буде:
+    fox-harko.pp.ua
+*/
+
+const FALLBACK_PARENT =
+    "fox-harko.pp.ua";
+
+
+
+/* =========================================================
+   ОТРИМАТИ TWITCH PARENT
+========================================================= */
+
+function getTwitchParents(){
+
+
+    const parents =
+        new Set();
+
+
+    /*
+        Поточний домен
+    */
+
+    if(
+        window.location.hostname
+    ){
+
+        parents.add(
+            window.location.hostname
+        );
+
+    }
+
+
+    /*
+        Якщо код відкритий не через
+        нормальний HTTP домен,
+        використовуємо ваш домен.
+    */
+
+    if(
+        parents.size === 0
+    ){
+
+        parents.add(
+            FALLBACK_PARENT
+        );
+
+    }
+
+
+    /*
+        Якщо цей блок колись буде
+        вставлений у iframe на іншій
+        сторінці.
+
+        Додаємо також домен батьківської
+        сторінки.
+    */
+
+    try{
+
+
+        if(
+            document.referrer
+        ){
+
+
+            const referrer =
+                new URL(
+                    document.referrer
+                );
+
+
+            if(
+                referrer.hostname
+            ){
+
+                parents.add(
+                    referrer.hostname
+                );
+
+            }
+
+        }
+
+
+    }catch(error){
+
+        /* нічого не робимо */
+
+    }
+
+
+    return Array.from(
+        parents
+    );
+
+}
+
+
+
+/* =========================================================
+   TWITCH PLAYER URL
+========================================================= */
+
+function createPlayerURL(
+    autoplay = true,
+    muted = true
+){
+
+
+    const url =
+        new URL(
+            "https://player.twitch.tv/"
+        );
+
+
+    url.searchParams.set(
+        "channel",
+        TWITCH_CHANNEL
+    );
+
+
+    /*
+        Twitch дозволяє декілька
+        parent параметрів.
+    */
+
+    getTwitchParents()
+        .forEach(parent => {
+
+            url.searchParams.append(
+                "parent",
+                parent
+            );
+
+        });
+
+
+    url.searchParams.set(
+        "autoplay",
+        autoplay
+            ? "true"
+            : "false"
+    );
+
+
+    url.searchParams.set(
+        "muted",
+        muted
+            ? "true"
+            : "false"
+    );
+
+
+    return url.toString();
+
+}
+
+
+
+/* =========================================================
+   TWITCH CHAT URL
+========================================================= */
+
+function createChatURL(){
+
+
+    let url =
+
+        "https://www.twitch.tv/embed/" +
+
+        encodeURIComponent(
+            TWITCH_CHANNEL
+        ) +
+
+        "/chat?";
+
+
+    const params =
+        [];
+
+
+    getTwitchParents()
+        .forEach(parent => {
+
+
+            params.push(
+
+                "parent=" +
+                encodeURIComponent(
+                    parent
+                )
+
+            );
+
+
+        });
+
+
+    /*
+        Темна тема Twitch Chat
+    */
+
+    params.push(
+        "darkpopout"
+    );
+
+
+    url +=
+        params.join("&");
+
+
+    return url;
+
+}
+
+
+
+/* =========================================================
+   ПЕРЕВІРЯЄМО:
+   ЧИ ВІДКРИТО ОКРЕМЕ ВІКНО ЧАТУ
+========================================================= */
+
+const currentURL =
+    new URL(
+        window.location.href
+    );
+
+
+const popoutMode =
+
+    currentURL
+        .searchParams
+        .get(
+            "twitch_popout"
+        ) === "1";
+
+
+
+/* =========================================================
+   РЕЖИМ ОКРЕМОГО ВІКНА
+========================================================= */
+
+if(
+    popoutMode
+){
+
+
+    /*
+        У новому вікні нам не потрібна
+        решта сторінки.
+
+        Залишаємо лише:
+        PLAYER + CHAT
+    */
+
+    document.body.innerHTML = "";
+
+
+    document.body
+        .classList
+        .add(
+            "twitch-popout-mode"
+        );
+
+
+
+    /*
+        Створюємо контейнер
+    */
+
+    const popout =
+        document.createElement(
+            "div"
+        );
+
+
+    popout.className =
+        "twitch-popout";
+
+
+
+    /* =====================================================
+       PLAYER
+    ===================================================== */
+
+    const playerBox =
+        document.createElement(
+            "div"
+        );
+
+
+    playerBox.className =
+        "twitch-popout-player";
+
+
+
+    const playerIframe =
+        document.createElement(
+            "iframe"
+        );
+
+
+    playerIframe.src =
+        createPlayerURL(
+            true,
+            true
+        );
+
+
+    playerIframe.allowFullscreen =
+        true;
+
+
+    playerIframe.setAttribute(
+
+        "allow",
+
+        [
+            "autoplay",
+            "fullscreen",
+            "picture-in-picture",
+            "encrypted-media"
+        ].join("; ")
+
+    );
+
+
+
+    playerBox.appendChild(
+        playerIframe
+    );
+
+
+
+    /* =====================================================
+       CHAT
+    ===================================================== */
+
+    const chatBox =
+        document.createElement(
+            "div"
+        );
+
+
+    chatBox.className =
+        "twitch-popout-chat";
+
+
+
+    const chatIframe =
+        document.createElement(
+            "iframe"
+        );
+
+
+    chatIframe.src =
+        createChatURL();
+
+
+    chatIframe.setAttribute(
+
+        "allow",
+
+        "storage-access-by-user-activation"
+
+    );
+
+
+
+    chatBox.appendChild(
+        chatIframe
+    );
+
+
+
+    /* =====================================================
+       ДОДАЄМО
+    ===================================================== */
+
+    popout.appendChild(
+        playerBox
+    );
+
+
+    popout.appendChild(
+        chatBox
+    );
+
+
+    document.body.appendChild(
+        popout
+    );
+
+
+
+    /*
+        ВАЖЛИВО:
+
+        fullscreen Twitch працює
+        стандартною кнопкою самого
+        Twitch-плеєра.
+
+        Коли користувач натискає ⛶,
+        Twitch iframe займає весь екран.
+
+        Після виходу з fullscreen:
+        player знову зверху,
+        chat знову знизу.
+    */
+
+
+    return;
+
+}
+
+
+
+/* =========================================================
+   ЗВИЧАЙНИЙ ВІДЖЕТ
+========================================================= */
+
+let twitchLoaded =
+    false;
+
+
+
+const button =
+    document.getElementById(
+        "foxHarkoTwitchLoadBtn"
+    );
+
+
+const loader =
+    document.getElementById(
+        "foxHarkoTwitchLoader"
+    );
+
+
+const widget =
+    document.getElementById(
+        "foxHarkoTwitchWidget"
+    );
+
+
+const playerContainer =
+    document.getElementById(
+        "foxHarkoTwitchPlayer"
+    );
+
+
+const chatButton =
+    document.getElementById(
+        "foxHarkoTwitchChatBtn"
+    );
+
+
+
+/*
+    Захист, якщо якийсь елемент
+    випадково видалили з HTML.
+*/
+
+if(
+    !button ||
+    !loader ||
+    !widget ||
+    !playerContainer
+){
+
+    return;
+
+}
+
+
+
+/* =========================================================
+   КНОПКА "ПОКАЗАТИ TWITCH"
+========================================================= */
+
+button.addEventListener(
+
+    "click",
+
+    function(event){
+
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+
+        if(
+            twitchLoaded
+        ){
+
+            return;
+
+        }
+
+
+        twitchLoaded =
+            true;
+
+
+
+        /*
+            Прибираємо кнопку
+        */
+
+        button.style.display =
+            "none";
+
+
+
+        /*
+            Показуємо завантаження
+        */
+
+        loader.style.display =
+            "flex";
+
+
+
+        /* =================================================
+           СТВОРЮЄМО TWITCH IFRAME
+        ================================================= */
+
+        const iframe =
+            document.createElement(
+                "iframe"
+            );
+
+
+
+        /*
+            autoplay = true
+            muted = true
+
+            Без звуку autoplay
+            працює стабільніше.
+        */
+
+        iframe.src =
+            createPlayerURL(
+                true,
+                true
+            );
+
+
+
+        /*
+            Дозволяємо fullscreen
+        */
+
+        iframe.allowFullscreen =
+            true;
+
+
+
+        iframe.setAttribute(
+
+            "allow",
+
+            [
+                "autoplay",
+                "fullscreen",
+                "picture-in-picture",
+                "encrypted-media"
+            ].join("; ")
+
+        );
+
+
+
+        /*
+            Коли Twitch iframe
+            завантажився
+        */
+
+        iframe.onload =
+            function(){
+
+
+                loader.style.display =
+                    "none";
+
+
+                widget
+                    .classList
+                    .add(
+                        "show"
+                    );
+
+            };
+
+
+
+        playerContainer
+            .appendChild(
+                iframe
+            );
+
+
+    }
+
+);
+
+
+
+/* =========================================================
+   КНОПКА "ВІДКРИТИ ЧАТ"
+========================================================= */
+
+if(
+    chatButton
+){
+
+
+    chatButton.addEventListener(
+
+        "click",
+
+        function(){
+
+
+            /*
+                Беремо адресу
+                поточної сторінки.
+
+                Наприклад:
+
+                https://fox-harko.pp.ua/beta/1/
+            */
+
+            const popupURL =
+                new URL(
+                    window.location.href
+                );
+
+
+
+            /*
+                Додаємо режим
+                окремого Twitch вікна
+            */
+
+            popupURL
+                .searchParams
+                .set(
+                    "twitch_popout",
+                    "1"
+                );
+
+
+
+            /*
+                Відкриваємо окреме
+                вікно.
+
+                Там автоматично буде:
+
+                PLAYER
+                ↓
+                CHAT
+            */
+
+            window.open(
+
+                popupURL.toString(),
+
+                "foxHarkoTwitchChat",
+
+                [
+                    "width=900",
+                    "height=900",
+                    "resizable=yes",
+                    "scrollbars=no"
+                ].join(",")
+
+            );
+
+
+        }
+
+    );
+
+}
+
+
+})();
+
+</script>
+
+
+</body>
+</html>
